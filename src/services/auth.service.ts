@@ -76,7 +76,7 @@ export const loginUser = async (credentials) => {
       data: credentials,
     });
 
-    if (!response.data.accessToken) {
+    if (!response?.data?.accessToken) {
       throw {
         message: "Authentication failed - no token received",
         statusCode: 401,

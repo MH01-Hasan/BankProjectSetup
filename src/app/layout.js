@@ -1,6 +1,7 @@
 import Providers from '@/lib/Providers';
 import './globals.css';
 import { Inter } from 'next/font/google';
+import Navbar from '@/components/Navbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -14,7 +15,8 @@ export default function RootLayout({ children }) {
     <Providers>
       <html lang="en">
         <body className={inter.className}>
-          <main className="pt-16 mt-16">{children}</main> {/* Add padding to avoid overlap */}
+          <Navbar/>
+          <main>{children}</main> {/* Add top padding to avoid overlap with fixed navbar */}
         </body>
       </html>
     </Providers>
