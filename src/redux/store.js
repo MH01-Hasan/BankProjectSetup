@@ -4,6 +4,10 @@ import { reducer } from './rootReducer';
 
 export const store = configureStore({
   reducer,
+  
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(baseApi.middleware),
 });
+
+// Call getTotals after store initialization
+
