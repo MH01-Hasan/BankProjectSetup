@@ -1,9 +1,8 @@
+"use-client";
 import Providers from '@/lib/Providers';
 import './globals.css';
-import { Inter } from 'next/font/google';
 import Navbar from '@/components/Navbar';
 
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Social Services Club',
@@ -14,7 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <Providers>
       <html lang="en">
-        <body className={inter.className}>
+        <body>
           <Navbar/>
           <main>{children}</main> {/* Add top padding to avoid overlap with fixed navbar */}
         </body>

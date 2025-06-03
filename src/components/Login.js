@@ -1,9 +1,10 @@
 "use client";
 
-import { loginUser } from '@/services/auth.service';
+import { useUserLoginMutation } from '@/redux/api/authApi';
 import { motion } from 'framer-motion';
 import { ApiError } from 'next/dist/server/api-utils';
 import Head from 'next/head';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginPage() {
@@ -14,33 +15,74 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
+
+const [userLogin] = useUserLoginMutation();
+
+
+
+
+  const router = useRouter();
+
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
+  e.preventDefault();
+  setIsLoading(true);
+  setError('');
 
+  // Client-side validation
+  if (!email || !password) {
+    setError('Please fill in all fields');
+    setIsLoading(false);
+    return;
+  }
 
+  try {
+    const credentials = { email, password };
+    const response = await userLogin(credentials).unwrap();
 
-    try {
-      const credentials = {
-        email: email,
-        password: password
-      };
-      const respons = await loginUser(credentials);
-      if (!respons || !respons.token) {
-        router.push('/'); // Redirect to home or dashboard
-        throw new ApiError(400, 'Invalid login response');
-      }
-      router.push('/'); // Redirect to home or dashboard
-    } catch (err) {
-      setError(err.message || 'Login failed');
-    } finally {
-      setIsLoading(false);
+    // If login succeeds, redirect to homepage
+    if(response.data.accessToken) {
+        router.push('/');
     }
-    
-    // Simulate API call
+  
+  } catch (err) {
+    console.error('Login error:', err);
 
-  };
+    let errorMessage = 'Login failed';
+
+    if (err && typeof err === 'object' && err.data) {
+      const backendMessage = err.data.message || err.message;
+
+      if (err.status === 401) {
+        if (backendMessage.includes('User not found')) {
+          errorMessage = 'No account found with this email';
+        } else if (backendMessage.includes('Incorrect password')) {
+          errorMessage = 'Invalid password. Please try again';
+        } else {
+          errorMessage = 'Invalid credentials';
+        }
+      } else if (err.status === 403) {
+        errorMessage = 'Account not active. Please verify your email';
+      } else if (err.status === 400) {
+        errorMessage = 'Invalid input: ' + backendMessage;
+      } else {
+        errorMessage = backendMessage;
+      }
+    } else if (err instanceof Error) {
+      if (err.message.includes('Network Error')) {
+        errorMessage = 'Network error. Please check your connection';
+      } else {
+        errorMessage = err.message || 'Login failed';
+      }
+    } else {
+      errorMessage = 'An unexpected error occurred';
+    }
+
+    setError(errorMessage);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
