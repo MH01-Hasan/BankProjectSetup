@@ -68,14 +68,14 @@ const CartPage = () => {
   }, 0);
 
   const handleRemoveItem = (id) => {
-    dispatch(removeItem(id));
+    // dispatch(removeItem(id));
   };
 
   const handleQuantityChange = (id, change) => {
     const item = cartItems.find(item => item.id === id);
     const newQuantity = item.cartQuantity + change;
     if (newQuantity > 0) {
-      dispatch(updateQuantity({ id, quantity: newQuantity }));
+      // dispatch(updateQuantity({ id, quantity: newQuantity }));
     }
   };
 
@@ -134,7 +134,6 @@ const CartPage = () => {
         </tr>
       );
     })}
-     <th className='text-gray-500 font-medium'>total</th>
 
     {/* Damage Items */}
     {standaloneDamageItems.map((damageItem, xxx) => (
@@ -151,7 +150,6 @@ const CartPage = () => {
       
      
     ))}
-     <th className='text-gray-500 font-medium'>Total</th>
 
     {standaloneReturnItems.map((returnItem, yyy) => (
       <tr key={`${returnItem.id}`} className="hover:bg-gray-50 transition-colors">
@@ -166,7 +164,6 @@ const CartPage = () => {
       </tr>
     ))}
 
-   <th className='text-gray-500 font-medium'>Total</th>
   </tbody>
   
   {/* Table Footer with Totals */}

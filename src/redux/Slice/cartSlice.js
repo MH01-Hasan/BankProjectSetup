@@ -128,6 +128,23 @@ const cartSlice = createSlice({
       state.returnTotalQuantity = returnTotals.fromOrders + returnTotals.fromReturnList;
     },
 
+    // Clear cart (reset all items and totals)
+    clearCart(state) {
+      state.cartItem = [];
+      state.damageItem = [];
+      state.returnItem = [];
+      state.cartTotalQuantity = 0;
+      state.cartTotalAmount = 0;
+      state.damageTotalQuantity = 0;
+      state.returnTotalQuantity = 0;
+
+      localStorage.removeItem('cartItem');
+      localStorage.removeItem('damageItem');
+      localStorage.removeItem('returnItem');
+    },
+
+   
+
     // Other existing reducers can be added here...
   }
 });
@@ -136,6 +153,7 @@ export const {
   addToCart,
   addToDamage,
   addToReturn,
+  clearCart,
   calculateTotals
 } = cartSlice.actions;
 
