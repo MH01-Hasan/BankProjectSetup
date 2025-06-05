@@ -143,6 +143,20 @@ const cartSlice = createSlice({
       localStorage.removeItem('returnItem');
     },
 
+    removeFromCart: (state, action) => {
+  state.cartItem = state.cartItem.filter(item => item.id !== action.payload);
+  localStorage.setItem('cartItem', JSON.stringify(state.cartItem));
+},
+
+updateCartItemQuantity: (state, action) => {
+  const { id, quantity } = action.payload;
+  const item = state.cartItem.find(item => item.id === id);
+  if (item) {
+    item.cartQuantity = quantity;
+  }
+  localStorage.setItem('cartItem', JSON.stringify(state.cartItem));
+},
+
    
 
     // Other existing reducers can be added here...
@@ -154,6 +168,8 @@ export const {
   addToDamage,
   addToReturn,
   clearCart,
+  removeFromCart,
+  updateCartItemQuantity,
   calculateTotals
 } = cartSlice.actions;
 

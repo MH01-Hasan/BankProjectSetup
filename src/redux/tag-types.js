@@ -4,6 +4,7 @@ export const tagTypes = {
   auth: 'auth',
   product: 'product',
   category: 'category',
+  salesman: 'salesman',
   
 };
 
@@ -13,4 +14,5 @@ export const tagTypesList = [
   tagTypes.auth,
   tagTypes.product,
   tagTypes.category,
+  tagTypes.salesman,
 ];
